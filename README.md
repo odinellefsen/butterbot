@@ -1,4 +1,5 @@
 # Autonomous Robot that Fetches My Darn "Kærgården" Butter
+- so the guy does it all on his own no remote controlling should be done
 
 Should be made using:
 - Raspberry Pi 5
