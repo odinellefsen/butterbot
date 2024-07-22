@@ -5,7 +5,7 @@ Should be made using:
 - Raspberry Pi 5
 - Maybe 9g servos or the big yellow ones
 - Some kind of module making it possible to have multiple servos for hands and wheels (16 bit channel something or the other...)
-- Ultrasonic sensor to detect how close I am to butter, other objects, and to make sure that dummy doesn't fall off the edge of tables
+- Ultrasonic sensor to detect proximity to butter, other objects, and to make sure that dummy doesn't fall off the edge of tables
 - Fusion 360
 - Prusa MK4 3D printer
 - Raspberry Pi Camera
