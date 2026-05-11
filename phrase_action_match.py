@@ -40,7 +40,7 @@ def main():
     model.to(device)
     
     # Example input phrase
-    input_phrase = "Grab a stick of butter and stop being so stupid"
+    input_phrase = "get butter"
     predicted_action_idx = predict_action(model, tokenizer, input_phrase)
     predicted_action = actions[predicted_action_idx]
 
