@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Model weights (too large for GitHub)
+finetuned_roberta/model.safetensors
+*.safetensors
+*.bin
+*.pt
+*.pth
