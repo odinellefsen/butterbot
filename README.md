@@ -1,13 +1,25 @@
 # butterbot
 
-A fine-tuned RoBERTa model that classifies input phrases into one of four actions:
+A collection of components for building a butter robot.
+
+## Components
+
+| Directory | Description |
+|---|---|
+| [`sentence-classifier/`](./sentence-classifier) | Fine-tuned RoBERTa model that maps input phrases to robot actions |
+
+---
+
+## sentence-classifier
+
+Classifies input phrases into one of four actions:
 
 - **I get butter** — neutral butter request
 - **I get butter, you're mean** — butter request with a rude tone
 - **I get butter, I'm happy** — butter request with a kind tone
 - **perform generic task** — everything else
 
-## Setup
+### Setup
 
 ```bash
 python3 -m venv .venv
@@ -15,22 +27,23 @@ source .venv/bin/activate
 pip install transformers torch
 ```
 
-## Train
+### Train
 
-Fine-tunes `roberta-base` on the labelled phrase dataset and saves the model to `./finetuned_roberta`:
+Fine-tunes `roberta-base` and saves the model to `sentence-classifier/finetuned_roberta`:
 
 ```bash
+cd sentence-classifier
 python train.py
 ```
 
-Training runs for 150 epochs on CPU. The model weights are saved locally and are **not** committed to the repo (too large for GitHub).
+Training runs for 150 epochs on CPU. Model weights are **not** committed to the repo (too large for GitHub).
 
-## Run inference
+### Run inference
 
 ```bash
-python phrase_action_match.py
+python sentence-classifier/phrase_action_match.py
 ```
 
-Edit the `input_phrase` variable in `phrase_action_match.py` to test different phrases. The script loads the model from `./finetuned_roberta` and prints the predicted action.
+Edit `input_phrase` in `phrase_action_match.py` to test different phrases.
 
 > **Note:** You must train the model first (or obtain the `finetuned_roberta/` weights separately) before running inference.

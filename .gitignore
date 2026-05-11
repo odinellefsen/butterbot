@@ -7,7 +7,7 @@ venv/
 env/
 
 # Model weights (too large for GitHub)
-finetuned_roberta/model.safetensors
+**/finetuned_roberta/model.safetensors
 *.safetensors
 *.bin
 *.pt

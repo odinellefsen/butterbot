@@ -30,7 +30,7 @@ def predict_action(model, tokenizer, input_text):
 
 def main():
     actions = ["I get butter", "I get butter, you're mean, you make me sad", "I get butter, you're happy, I'm happy", "perform generic task"]
-    model_path = "./finetuned_roberta"
+    model_path = "./sentence-classifier/finetuned_roberta"
     
     # Load the fine-tuned model and tokenizer
     model, tokenizer = load_model_and_tokenizer(model_path)
