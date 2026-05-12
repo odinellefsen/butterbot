@@ -30,6 +30,9 @@ phrases = [
     "look that up for me", "send a message", "call mom", "remind me later",
     "book a table for two", "check the weather", "translate this", "take a photo",
     "write a shopping list", "clean up a bit", "find my keys", "read this for me",
+
+    # examples of "Existential crisis"
+    "what happens when the butter runs out",
 ]
 
 # Labels for the actions
