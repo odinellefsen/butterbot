@@ -10,7 +10,7 @@ import sys
 # Paths
 VOSK_MODEL_PATH = os.path.join(os.path.dirname(__file__), "../text-to-speech/vosk/vosk-model-small-en-us-0.15")
 ROBERTA_MODEL_PATH = os.path.join(os.path.dirname(__file__), "../sentence-classifier/finetuned_roberta")
-READY_SOUND = os.path.join(os.path.dirname(__file__), "../butterbot_voice/butterbot-made-with-Voicemod.mp3")
+READY_SOUND = os.path.join(os.path.dirname(__file__), "../butterbot_voice/what_is_my_purpose.mp3")
 
 
 def play_sound(path):
