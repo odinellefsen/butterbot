@@ -8,18 +8,18 @@ actions = ["get butter", "perform generic task", "answer question", "existential
 
 phrases = [
     # examples of "get butter"
-    "can you get me some butter", "I need butter", "grab the butter for me",
+    "can you get me some butter", "i need butter", "grab the butter for me",
     "butter please", "could you get the butter", "get me some butter",
     "bring me the butter", "pass the butter", "hand me the butter",
-    "can I have the butter", "get some butter", "I'll need the butter",
+    "can i have the butter", "get some butter", "i'll need the butter",
     "butter, thanks", "get the butter", "where's the butter",
-    "bring the butter over", "can you grab the butter", "I could use some butter",
+    "bring the butter over", "can you grab the butter", "i could use some butter",
     "get butter please", "we need butter", "fetch the butter for me",
 
     # examples of "perform generic task"
     "get some ketchup", "get me some ketchup", "go drive a car", "start dancing", 
-    "I want you to dance", "dance now", "show me some dance moves", "order a pizza", 
-    "make me a coffee", "get me some milk", "grab a snack", "I want some chips",
+    "i want you to dance", "dance now", "show me some dance moves", "order a pizza", 
+    "make me a coffee", "get me some milk", "grab a snack", "i want some chips",
     "can you get me some juice", "fetch me a glass of water", "heat up my leftovers", "make me some tea",
     "play some music", "put on a podcast", "play the next episode", "turn on the TV",
     "go for a walk", "turn off the lights", "open the window", "lock the door",
@@ -31,17 +31,17 @@ phrases = [
 
     # examples of "answer question"
     "wanna watch a show", "wanna watch a tv show", "what time is it", "what's the weather like",
-    "how do I make pasta", "what does this word mean", "what day is it", "is it going to rain",
+    "how do i make pasta", "what does this word mean", "what day is it", "is it going to rain",
     "what's the capital of France", "how far is the moon", "when does the shop close", "what's on TV tonight",
     "can you explain that", "why is the sky blue", "do you know anything about this", "what would you do",
     "how does that work", "what is that", "who made this", "when did that happen",
     "what's the difference between these", "is that true", "how old is that",
     "what does that mean", "where does that come from", "why does that happen",
-    "what do I like", "what are my hobbies", "what's my name", "how old am I",
-    "what did I say earlier", "do I like butter", "what's my favourite food",
-    "what do I usually do in the mornings", "am I in a good mood", "what did I do today",
-    "what are my plans for today", "do I have any allergies", "what do I usually watch",
-    "what kind of music do I like", "have I done this before", "do I look good today"
+    "what do i like", "what are my hobbies", "what's my name", "how old am i",
+    "what did i say earlier", "do i like butter", "what's my favourite food",
+    "what do i usually do in the mornings", "am i in a good mood", "what did i do today",
+    "what are my plans for today", "do i have any allergies", "what do i usually watch",
+    "what kind of music do i like", "have i done this before", "do i look good today"
 
     # examples of "existential crisis"
     "what happens when the butter runs out",
