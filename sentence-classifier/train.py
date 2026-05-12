@@ -33,10 +33,19 @@ phrases = [
     # examples of "perform generic task"
     "get some ketchup", "wanna watch a show", "wanna watch a tv show", "get me some ketchup",
     "go drive a car", "start dancing", "I want you to dance", "show me some dance moves", "dance now",
+    "order a pizza", "make me a coffee", "get me some milk", "grab a snack", "I want some chips",
+    "can you get me some juice?", "fetch me a glass of water", "heat up my leftovers", "make me some tea",
+    "play some music", "put on a podcast", "find me a good movie", "play the next episode",
+    "turn on the TV", "shuffle my playlist", "search for a recipe", "read me the news",
+    "go for a walk", "turn off the lights", "open the window", "lock the door",
+    "take out the trash", "wake me up in an hour", "set a timer", "charge my phone",
+    "look that up for me", "send a message", "call mom", "remind me later",
+    "book a table for two", "check the weather", "translate this", "take a photo",
+    "write a shopping list", "clean up a bit", "find my keys", "read this for me",
 ]
 
 # Labels for the actions
-labels = [0] * 31 + [1] * 20 + [2] * 20 + [3] * 50
+labels = [0] * 31 + [1] * 20 + [2] * 39
 
 # Initialize the tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
