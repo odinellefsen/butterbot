@@ -54,11 +54,11 @@ phrases = [
     "sometimes I just wanna talk to someone",
 
     # examples of "existential crisis"
-    "what happens when the butter runs out", "do you like butter"
+    "what happens when the butter runs out", "do you like butter", "what is your purpose"
 ]
 
 # Labels for the actions
-labels = [0] * 21 + [1] * 45 + [2] * 40 + [4] * 21 + [3] * 2
+labels = [0] * 21 + [1] * 45 + [2] * 40 + [4] * 21 + [3] * 3
 
 # Initialize the tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
