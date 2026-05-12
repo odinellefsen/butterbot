@@ -23,7 +23,7 @@ def main():
         exit()
 
     # Load a custom model
-    model_path = os.path.join('.', 'runs', 'detect', 'train', 'weights', 'last.pt')
+    model_path = os.path.join('.', 'runs', 'detect', 'train', 'weights', 'best.pt')
     model = YOLO(model_path)
     threshold = 0.45  # Adjust the confidence threshold as needed
 
