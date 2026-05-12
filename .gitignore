@@ -5,6 +5,7 @@ __pycache__/
 .venv/
 venv/
 env/
+text-to-speech/vosk/
 
 # Model weights (too large for GitHub)
 **/finetuned_roberta/model.safetensors
