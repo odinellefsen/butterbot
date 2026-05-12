@@ -7,16 +7,13 @@ actions = ["I get butter", "perform generic task", "Existential crisis"]
 
 phrases = [
     # examples of "normal get butter"
-    "lay hands on butter", "snag some butter", "grab a stick of butter", 
-    "fetch me some butter", "I'd like some butter", "can we have butter?", 
-    "pass over the butter", "bring butter here", "need a pat of butter", 
-    "scoop up the butter", "get butter for me", "obtain the butter", 
-    "acquire the butter", "secure some butter", "procure the butter",
-    "hand over the butter", "supply the butter", "fetch the butter", 
-    "bring butter now", "bring the butter over", "hand me the butter now",
-    "give me that butter", "I need that butter", "butter, please", 
-    "could use some butter", "provide the butter", "butter required", 
-    "acquire butter", "butter needed", "seek butter", "obtain butter",
+    "can you get me some butter?", "I need butter", "grab the butter for me",
+    "butter please", "could you get the butter?", "get me some butter",
+    "bring me the butter", "pass the butter", "hand me the butter",
+    "can I have the butter?", "get some butter", "I'll need the butter",
+    "butter, thanks", "get the butter", "where's the butter?",
+    "bring the butter over", "can you grab the butter?", "I could use some butter",
+    "get butter please", "we need butter", "fetch the butter for me",
 
     # examples of "perform generic task"
     "get some ketchup", "wanna watch a show", "wanna watch a tv show", "get me some ketchup",
@@ -36,7 +33,7 @@ phrases = [
 ]
 
 # Labels for the actions
-labels = [0] * 31 + [1] * 39
+labels = [0] * 21 + [1] * 39
 
 # Initialize the tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
