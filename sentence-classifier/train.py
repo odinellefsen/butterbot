@@ -4,37 +4,43 @@ import torch
 from torch.nn.functional import cross_entropy
 
 # Define the actions and example phrases for each action
-actions = ["I get butter", "perform generic task", "existential crisis"]
+actions = ["get butter", "perform generic task", "answer question", "existential crisis"]
 
 phrases = [
-    # examples of "normal get butter"
-    "can you get me some butter?", "I need butter", "grab the butter for me",
-    "butter please", "could you get the butter?", "get me some butter",
+    # examples of "get butter"
+    "can you get me some butter", "I need butter", "grab the butter for me",
+    "butter please", "could you get the butter", "get me some butter",
     "bring me the butter", "pass the butter", "hand me the butter",
-    "can I have the butter?", "get some butter", "I'll need the butter",
-    "butter, thanks", "get the butter", "where's the butter?",
-    "bring the butter over", "can you grab the butter?", "I could use some butter",
+    "can I have the butter", "get some butter", "I'll need the butter",
+    "butter, thanks", "get the butter", "where's the butter",
+    "bring the butter over", "can you grab the butter", "I could use some butter",
     "get butter please", "we need butter", "fetch the butter for me",
 
     # examples of "perform generic task"
-    "get some ketchup", "wanna watch a show", "wanna watch a tv show", "get me some ketchup",
-    "go drive a car", "start dancing", "I want you to dance", "show me some dance moves", "dance now",
-    "order a pizza", "make me a coffee", "get me some milk", "grab a snack", "I want some chips",
-    "can you get me some juice?", "fetch me a glass of water", "heat up my leftovers", "make me some tea",
-    "play some music", "put on a podcast", "find me a good movie", "play the next episode",
-    "turn on the TV", "shuffle my playlist", "search for a recipe", "read me the news",
+    "get some ketchup", "get me some ketchup", "go drive a car", "start dancing", 
+    "I want you to dance", "dance now", "show me some dance moves", "order a pizza", 
+    "make me a coffee", "get me some milk", "grab a snack", "I want some chips",
+    "can you get me some juice", "fetch me a glass of water", "heat up my leftovers", "make me some tea",
+    "play some music", "put on a podcast", "play the next episode", "turn on the TV",
     "go for a walk", "turn off the lights", "open the window", "lock the door",
     "take out the trash", "wake me up in an hour", "set a timer", "charge my phone",
-    "look that up for me", "send a message", "call mom", "remind me later",
-    "book a table for two", "check the weather", "translate this", "take a photo",
-    "write a shopping list", "clean up a bit", "find my keys", "read this for me",
+    "send a message", "call mom", "remind me later", "book a table for two", "take a photo",
+    "write a shopping list", "clean up a bit", "look that up for me", "check the weather", 
+    "translate this", "read me the news", "search for a recipe", "find me a good movie", 
+    "read this for me", "tell me a joke", "where are my keys", "do you know where my keys are"
 
-    # examples of "Existential crisis"
+    # examples of "answer question"
+    "wanna watch a show", "wanna watch a tv show", "what time is it", "what's the weather like", 
+    "how do I make pasta", "what does this word mean", "what day is it", "is it going to rain", 
+    "what's the capital of France", "how far is the moon", "when does the shop close", "what's on TV tonight", 
+    "can you explain that", "why is the sky blue", "do you know anything about this", "what would you do",
+
+    # examples of "existential crisis"
     "what happens when the butter runs out",
 ]
 
 # Labels for the actions
-labels = [0] * 21 + [1] * 46 + [2] * 1
+labels = [0] * 21 + [1] * 45 + [2] * 16 + [3] * 1
 
 # Initialize the tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')

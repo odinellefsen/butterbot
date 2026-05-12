@@ -30,7 +30,7 @@ def predict_action(model, tokenizer, input_text):
 
 def main():
     # Order is important here because in the training data we map an action to a specific integer.
-    actions = ["I get butter", "Perform generic task", "Existential crisis"]
+    actions = ["get butter", "perform generic task", "answer question", "existential crisis"]
     model_path = "./finetuned_roberta"
     
     # Load the fine-tuned model and tokenizer
@@ -41,7 +41,7 @@ def main():
     model.to(device)
     
     # Example input phrase
-    input_phrase = "get butter"
+    input_phrase = "Do you like butter"
     predicted_action_idx = predict_action(model, tokenizer, input_phrase)
     predicted_action = actions[predicted_action_idx]
 
