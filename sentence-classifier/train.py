@@ -30,32 +30,7 @@ phrases = [
     "Supply the butter, because you'll never be able to change", "Fetch the butter, you're so weak", "Bring butter now, nobody cares about you", 
     "Bring the butter over, because you're such a burden", "Hand me the butter now, you're always letting everyone down",
 
-    # examples of the butter bot being happy to get some butter. weird little guy.
-    "grab the butter please, you're great!", "get me some butter, nice work!",
-    "can you get the butter? you're so helpful!", "fetch the butter, thanks!",
-    "bring the butter over, you're the best!", "butter please, you're amazing!",
-    "could you grab the butter? you're doing great!", "get butter, you're awesome!",
-    "hand me the butter, good job!", "pass the butter, you're brilliant!",
-    "snag some butter, well done!", "get the butter, you're fantastic!",
-    "butter please, keep it up!", "bring butter, you're wonderful!",
-    "fetch me butter, great work!", "get butter for me, you're so good!",
-    "can I have the butter? you're lovely!", "hand over the butter, thanks so much!",
-    "bring me the butter, you're a star!", "grab butter for me, you're incredible!",
-
     # examples of "perform generic task"
-    "initiate action", "begin operation", "start task", "execute operation", 
-    "carry out action", "proceed with activity", "undertake action", 
-    "engage in operation", "conduct task", "execute task", "do the job", 
-    "go execute", "make it happen", "get it done", "action now", 
-    "sort it out", "handle the task", "complete the mission", 
-    "finish the job", "fulfill the request", "accomplish the task", 
-    "handle the duty", "perform the action", "fulfill the duty", 
-    "fulfill the obligation", "perform the task", "handle the business", 
-    "execute the plan", "complete the work", "do the deed", 
-    "follow through", "take care of it", "do the trick", 
-    "get the job done", "handle the job", "carry out the order", 
-    "carry out the duty", "complete the assignment", 
-    "fulfill the requirement", "execute the instruction", "watch movie",
     "get some ketchup", "wanna watch a show", "wanna watch a tv show", "get me some ketchup",
     "go drive a car", "start dancing", "I want you to dance", "show me some dance moves", "dance now",
 ]
