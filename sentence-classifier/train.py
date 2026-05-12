@@ -44,7 +44,7 @@ phrases = [
     "what kind of music do i like", "have i done this before", "do i look good today",
 
     # examples of "seeking companionship"
-    "wanna watch a movie", "wanna watch a tv show", "do you want to watch a movie"
+    "wanna watch a movie", "wanna watch a tv show", "do you want to watch a movie",
     "do you wanna hang out", "are you busy right now", "wanna talk for a bit",
     "I'm bored", "can you keep me company", "do you ever get lonely", "I just wanted to chat", 
     "you're my best friend", "I like spending time with you", "do you like me", "are we friends",
@@ -54,11 +54,11 @@ phrases = [
     "sometimes I just wanna talk to someone",
 
     # examples of "existential crisis"
-    "what happens when the butter runs out",
+    "what happens when the butter runs out", "do you like butter"
 ]
 
 # Labels for the actions
-labels = [0] * 21 + [1] * 45 + [2] * 40 + [3] * 1 + [4] * 20
+labels = [0] * 21 + [1] * 45 + [2] * 40 + [4] * 21 + [3] * 2
 
 # Initialize the tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
@@ -91,5 +91,5 @@ for epoch in range(num_epochs):
     print(f"Epoch {epoch + 1}, Loss: {loss.item()}")
 
 # Save the fine-tuned model
-model.save_pretrained("./finetuned_roberta")
-tokenizer.save_pretrained("./finetuned_roberta")
+model.save_pretrained("./sentence-classifier/finetuned_roberta")
+tokenizer.save_pretrained("./sentence-classifier/finetuned_roberta")
