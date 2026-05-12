@@ -3,7 +3,7 @@ import torch
 from torch.nn.functional import cross_entropy
 
 # Define the actions and example phrases for each action
-actions = ["I get butter", "I get butter, you were mean to me so now I'm sad", "perform generic task"]
+actions = ["I get butter", "perform generic task", "Existential crisis"]
 
 phrases = [
     # examples of "normal get butter"
@@ -17,18 +17,6 @@ phrases = [
     "give me that butter", "I need that butter", "butter, please", 
     "could use some butter", "provide the butter", "butter required", 
     "acquire butter", "butter needed", "seek butter", "obtain butter",
-
-    # examples of the butter bot getting sad.
-    "Lay hands on butter and stop being such a disappointment", 
-    "Snag some butter, you're just like a failure", "Grab a stick of butter and stop being so worthless", 
-    "Fetch me some butter, nobody cares about you anyway", "I'd like some butter, but you'll never be good enough", 
-    "Can we have butter? You're always letting everyone down", "Pass over the butter, you're just a burden to everyone", 
-    "Bring butter here, because you're so pathetic", "Need a pat of butter? Well, you're such a waste of space", 
-    "Scoop up the butter, you're so incompetent", "Get butter for me, you'll never be happy anyway", 
-    "Obtain the butter, you're such a loser", "Acquire the butter, nobody would miss you if you were gone", 
-    "Secure some butter, because you'll never be successful", "Hand over the butter, you're just like a disappointment to everyone", 
-    "Supply the butter, because you'll never be able to change", "Fetch the butter, you're so weak", "Bring butter now, nobody cares about you", 
-    "Bring the butter over, because you're such a burden", "Hand me the butter now, you're always letting everyone down",
 
     # examples of "perform generic task"
     "get some ketchup", "wanna watch a show", "wanna watch a tv show", "get me some ketchup",
