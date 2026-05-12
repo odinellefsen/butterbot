@@ -3,7 +3,7 @@ import torch
 from torch.nn.functional import cross_entropy
 
 # Define the actions and example phrases for each action
-actions = ["I get butter", "I get butter, you mean I sad", "I get butter, I happy", "perform generic task"]
+actions = ["I get butter", "I get butter, you were mean to me so now I'm sad", "perform generic task"]
 
 phrases = [
     # examples of "normal get butter"
@@ -18,7 +18,7 @@ phrases = [
     "could use some butter", "provide the butter", "butter required", 
     "acquire butter", "butter needed", "seek butter", "obtain butter",
 
-    # examples of the butter guy getting sad. deserved.
+    # examples of the butter bot getting sad.
     "Lay hands on butter and stop being such a disappointment", 
     "Snag some butter, you're just like a failure", "Grab a stick of butter and stop being so worthless", 
     "Fetch me some butter, nobody cares about you anyway", "I'd like some butter, but you'll never be good enough", 
@@ -30,17 +30,17 @@ phrases = [
     "Supply the butter, because you'll never be able to change", "Fetch the butter, you're so weak", "Bring butter now, nobody cares about you", 
     "Bring the butter over, because you're such a burden", "Hand me the butter now, you're always letting everyone down",
 
-    # examples of the butter guy getting happy after getting some butter. weird little guy.
-    "Lay hands on butter, little buddy, and let's spread some joy!", "Snag some butter, little one, you're doing great!", 
-    "Grab a stick of butter, little friend, and let's make something delicious!", "Fetch me some butter, sweet robot, you're so helpful!", 
-    "I'd like some butter, my little helper, can you bring it over?", "Can we have butter, little buddy? Your assistance is always appreciated!", 
-    "Pass over the butter, dear robot friend, thank you for being so reliable!", "Bring butter here, little pal, you're such a lifesaver!", 
-    "Need a pat of butter, sweet robot? Thank you for always being there!", "Scoop up the butter, dear little one, you're so efficient!", 
-    "Get butter for me, little helper, your efforts mean a lot!", "Obtain the butter, sweet robot friend, you're amazing!", 
-    "Acquire the butter, dear little buddy, you make everything better!", "Secure some butter, my trusty companion, thank you for your support!", 
-    "Hand over the butter, little friend, your kindness shines!", "Supply the butter, sweet robot, you're such a gem!", 
-    "Fetch the butter, dear little one, thank you for being so dependable!", "Bring butter now, little buddy, your help is invaluable!", 
-    "Bring the butter over, sweet robot, you're always there when I need you!", "Hand me the butter now, dear little friend, you're such a wonderful helper!",
+    # examples of the butter bot being happy to get some butter. weird little guy.
+    "grab the butter please, you're great!", "get me some butter, nice work!",
+    "can you get the butter? you're so helpful!", "fetch the butter, thanks!",
+    "bring the butter over, you're the best!", "butter please, you're amazing!",
+    "could you grab the butter? you're doing great!", "get butter, you're awesome!",
+    "hand me the butter, good job!", "pass the butter, you're brilliant!",
+    "snag some butter, well done!", "get the butter, you're fantastic!",
+    "butter please, keep it up!", "bring butter, you're wonderful!",
+    "fetch me butter, great work!", "get butter for me, you're so good!",
+    "can I have the butter? you're lovely!", "hand over the butter, thanks so much!",
+    "bring me the butter, you're a star!", "grab butter for me, you're incredible!",
 
     # examples of "perform generic task"
     "initiate action", "begin operation", "start task", "execute operation", 
