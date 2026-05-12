@@ -33,7 +33,7 @@ phrases = [
 ]
 
 # Labels for the actions
-labels = [0] * 21 + [1] * 39
+labels = [0] * 21 + [1] * 39 + [2] * 1
 
 # Initialize the tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
