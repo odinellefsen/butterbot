@@ -29,6 +29,7 @@ def predict_action(model, tokenizer, input_text):
     return predicted_action_idx
 
 def main():
+    # Order is important here because in the training data we map an action to a specific integer.
     actions = ["I get butter", "I get butter, you're mean, you make me sad", "I get butter, you're happy, I'm happy", "perform generic task"]
     model_path = "./finetuned_roberta"
     
