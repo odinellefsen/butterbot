@@ -27,7 +27,7 @@ phrases = [
     "send a message", "call mom", "remind me later", "book a table for two", "take a photo",
     "write a shopping list", "clean up a bit", "look that up for me", "check the weather", 
     "translate this", "read me the news", "search for a recipe", "find me a good movie", 
-    "read this for me", "tell me a joke", "where are my keys", "do you know where my keys are"
+    "read this for me", "tell me a joke", "where are my keys", "do you know where my keys are",
 
     # examples of "answer question"
     "wanna watch a show", "wanna watch a tv show", "what time is it", "what's the weather like",
@@ -41,14 +41,14 @@ phrases = [
     "what did i say earlier", "do i like butter", "what's my favourite food",
     "what do i usually do in the mornings", "am i in a good mood", "what did i do today",
     "what are my plans for today", "do i have any allergies", "what do i usually watch",
-    "what kind of music do i like", "have i done this before", "do i look good today"
+    "what kind of music do i like", "have i done this before", "do i look good today",
 
     # examples of "existential crisis"
     "what happens when the butter runs out",
 ]
 
 # Labels for the actions
-labels = [0] * 21 + [1] * 45 + [2] * 39 + [3] * 1
+labels = [0] * 21 + [1] * 45 + [2] * 42 + [3] * 1
 
 # Initialize the tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
