@@ -3,7 +3,7 @@ import torch
 from torch.nn.functional import cross_entropy
 
 # Define the actions and example phrases for each action
-actions = ["I get butter", "perform generic task", "Existential crisis"]
+actions = ["I get butter", "perform generic task", "existential crisis"]
 
 phrases = [
     # examples of "normal get butter"
