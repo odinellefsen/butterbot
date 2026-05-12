@@ -10,12 +10,10 @@ venv/
 env/
 text-to-speech/vosk/
 
-# YOLOv8 training artifacts
-butter_detection_yolov8/runs/
 
 # Model weights (too large for GitHub)
 **/finetuned_roberta/model.safetensors
 *.safetensors
 *.bin
-*.pt
+last.pt
 *.pth
