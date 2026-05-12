@@ -4,7 +4,7 @@ import torch
 from torch.nn.functional import cross_entropy
 
 # Define the actions and example phrases for each action
-actions = ["get butter", "perform generic task", "answer question", "existential crisis"]
+actions = ["get butter", "perform generic task", "answer question", "existential crisis", "seeking companionship"]
 
 phrases = [
     # examples of "get butter"
@@ -30,7 +30,7 @@ phrases = [
     "read this for me", "tell me a joke", "where are my keys", "do you know where my keys are",
 
     # examples of "answer question"
-    "wanna watch a show", "wanna watch a tv show", "what time is it", "what's the weather like",
+    "what time is it", "what's the weather like",
     "how do i make pasta", "what does this word mean", "what day is it", "is it going to rain",
     "what's the capital of France", "how far is the moon", "when does the shop close", "what's on TV tonight",
     "can you explain that", "why is the sky blue", "do you know anything about this", "what would you do",
@@ -43,12 +43,22 @@ phrases = [
     "what are my plans for today", "do i have any allergies", "what do i usually watch",
     "what kind of music do i like", "have i done this before", "do i look good today",
 
+    # examples of "seeking companionship"
+    "wanna watch a movie", "wanna watch a tv show", "do you want to watch a movie"
+    "do you wanna hang out", "are you busy right now", "wanna talk for a bit",
+    "I'm bored", "can you keep me company", "do you ever get lonely", "I just wanted to chat", 
+    "you're my best friend", "I like spending time with you", "do you like me", "are we friends",
+    "it's nice having you around", "I feel better when you're here",
+    "can we just hang out", "I don't feel like being alone right now",
+    "you're pretty fun to talk to", "I wish you were real",
+    "sometimes I just wanna talk to someone",
+
     # examples of "existential crisis"
     "what happens when the butter runs out",
 ]
 
 # Labels for the actions
-labels = [0] * 21 + [1] * 45 + [2] * 42 + [3] * 1
+labels = [0] * 21 + [1] * 45 + [2] * 40 + [3] * 1 + [4] * 20
 
 # Initialize the tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
