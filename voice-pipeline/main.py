@@ -4,10 +4,20 @@ import torch
 import pyaudio
 import json
 import os
+import subprocess
+import sys
 
 # Paths
 VOSK_MODEL_PATH = os.path.join(os.path.dirname(__file__), "../text-to-speech/vosk/vosk-model-small-en-us-0.15")
 ROBERTA_MODEL_PATH = os.path.join(os.path.dirname(__file__), "../sentence-classifier/finetuned_roberta")
+READY_SOUND = os.path.join(os.path.dirname(__file__), "../butterbot_voice/butterbot-made-with-Voicemod.mp3")
+
+
+def play_sound(path):
+    if sys.platform == "darwin":
+        subprocess.Popen(["afplay", path])
+    else:
+        subprocess.Popen(["mpg123", "-q", path])
 
 # Order must match label indices used during training
 ACTIONS = ["get butter", "perform generic task", "answer question", "existential crisis", "seeking companionship"]
@@ -49,6 +59,7 @@ def main():
     )
     stream.start_stream()
     print("Ready. Speak now.\n")
+    play_sound(READY_SOUND)
 
     try:
         while True:
@@ -60,6 +71,7 @@ def main():
                     action = predict_action(classifier, tokenizer, text)
                     print(f'Heard:  "{text}"')
                     print(f"Action: {action}\n")
+                    play_sound(READY_SOUND)
             else:
                 partial = json.loads(recognizer.PartialResult()).get("partial", "").strip()
                 if partial:
