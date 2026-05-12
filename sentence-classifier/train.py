@@ -54,7 +54,7 @@ phrases = [
     "sometimes I just wanna talk to someone",
 
     # examples of "existential crisis"
-    "what happens when the butter runs out", "do you like butter", "what is your purpose"
+    "what happens when the butter runs out", "do you like butter", "you pass butter"
 ]
 
 # Labels for the actions
