@@ -1,4 +1,5 @@
-from transformers import RobertaTokenizer, RobertaForSequenceClassification, AdamW
+from transformers import RobertaTokenizer, RobertaForSequenceClassification
+from torch.optim import AdamW
 import torch
 from torch.nn.functional import cross_entropy
 
@@ -33,7 +34,7 @@ phrases = [
 ]
 
 # Labels for the actions
-labels = [0] * 21 + [1] * 39 + [2] * 1
+labels = [0] * 21 + [1] * 46 + [2] * 1
 
 # Initialize the tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
@@ -56,7 +57,7 @@ labels = labels.to(device)
 
 # Training loop
 model.train()
-num_epochs = 150  # This is a small number of epochs for demonstration purposes
+num_epochs = 300
 for epoch in range(num_epochs):
     optimizer.zero_grad()
     outputs = model(**inputs)
