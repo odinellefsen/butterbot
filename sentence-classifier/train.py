@@ -30,17 +30,25 @@ phrases = [
     "read this for me", "tell me a joke", "where are my keys", "do you know where my keys are"
 
     # examples of "answer question"
-    "wanna watch a show", "wanna watch a tv show", "what time is it", "what's the weather like", 
-    "how do I make pasta", "what does this word mean", "what day is it", "is it going to rain", 
-    "what's the capital of France", "how far is the moon", "when does the shop close", "what's on TV tonight", 
+    "wanna watch a show", "wanna watch a tv show", "what time is it", "what's the weather like",
+    "how do I make pasta", "what does this word mean", "what day is it", "is it going to rain",
+    "what's the capital of France", "how far is the moon", "when does the shop close", "what's on TV tonight",
     "can you explain that", "why is the sky blue", "do you know anything about this", "what would you do",
+    "how does that work", "what is that", "who made this", "when did that happen",
+    "what's the difference between these", "is that true", "how old is that",
+    "what does that mean", "where does that come from", "why does that happen",
+    "what do I like", "what are my hobbies", "what's my name", "how old am I",
+    "what did I say earlier", "do I like butter", "what's my favourite food",
+    "what do I usually do in the mornings", "am I in a good mood", "what did I do today",
+    "what are my plans for today", "do I have any allergies", "what do I usually watch",
+    "what kind of music do I like", "have I done this before", "do I look good today"
 
     # examples of "existential crisis"
     "what happens when the butter runs out",
 ]
 
 # Labels for the actions
-labels = [0] * 21 + [1] * 45 + [2] * 16 + [3] * 1
+labels = [0] * 21 + [1] * 45 + [2] * 39 + [3] * 1
 
 # Initialize the tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
