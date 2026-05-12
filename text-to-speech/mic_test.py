@@ -1,5 +1,6 @@
 from vosk import Model, KaldiRecognizer
 import pyaudio
+import json
 import os
 
 model_path = os.path.join(os.path.dirname(__file__), "vosk", "vosk-model-small-en-us-0.15")
@@ -14,10 +15,17 @@ stream = mic.open(format=pyaudio.paInt16,
                 input=True,
                 frames_per_buffer=8192)
 stream.start_stream()
-
+print("Listening... (speak now, Ctrl+C to stop)")
 
 while True:
     data = stream.read(4096, exception_on_overflow=False)
     if recognizer.AcceptWaveform(data):
-        text = recognizer.Result()
-        print(text[14:-3])
+        result = json.loads(recognizer.Result())
+        text = result.get("text", "").strip()
+        if text:
+            print(f"Heard: {text}")
+    else:
+        partial = json.loads(recognizer.PartialResult())
+        partial_text = partial.get("partial", "").strip()
+        if partial_text:
+            print(f"  ... {partial_text}", end="\r")
