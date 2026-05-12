@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import onnxruntime as rt
 import os
+import time
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "runs", "detect", "train", "weights", "best.onnx")
 CONFIDENCE_THRESHOLD = 0.45
@@ -24,14 +25,32 @@ def postprocess(outputs, orig_w, orig_h):
     mask = scores > CONFIDENCE_THRESHOLD
     predictions = predictions[mask]
 
-    boxes = []
+    if len(predictions) == 0:
+        return []
+
+    boxes_xyxy = []
+    scores_list = []
     for pred in predictions:
         cx, cy, w, h, score = pred
-        x1 = int((cx - w / 2) * orig_w / INPUT_SIZE)
-        y1 = int((cy - h / 2) * orig_h / INPUT_SIZE)
-        x2 = int((cx + w / 2) * orig_w / INPUT_SIZE)
-        y2 = int((cy + h / 2) * orig_h / INPUT_SIZE)
-        boxes.append((x1, y1, x2, y2, float(score)))
+        x1 = (cx - w / 2) * orig_w / INPUT_SIZE
+        y1 = (cy - h / 2) * orig_h / INPUT_SIZE
+        x2 = (cx + w / 2) * orig_w / INPUT_SIZE
+        y2 = (cy + h / 2) * orig_h / INPUT_SIZE
+        boxes_xyxy.append([x1, y1, x2, y2])
+        scores_list.append(float(score))
+
+    # Apply NMS to eliminate duplicate boxes around the same object
+    indices = cv2.dnn.NMSBoxes(
+        [[x1, y1, x2 - x1, y2 - y1] for x1, y1, x2, y2 in boxes_xyxy],
+        scores_list,
+        CONFIDENCE_THRESHOLD,
+        nms_threshold=0.4,
+    )
+
+    boxes = []
+    for i in indices:
+        x1, y1, x2, y2 = boxes_xyxy[i]
+        boxes.append((int(x1), int(y1), int(x2), int(y2), scores_list[i]))
 
     return boxes
 
@@ -54,9 +73,12 @@ def main():
         if not ret:
             break
 
+        t0 = time.perf_counter()
         img = preprocess(frame)
         outputs = session.run(None, {input_name: img})
         boxes = postprocess(outputs, orig_w, orig_h)
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        print(f"{elapsed_ms:.1f}ms  {len(boxes)} butter", end="\r")
 
         for x1, y1, x2, y2, score in boxes:
             label = f"butter {score:.2f}"
