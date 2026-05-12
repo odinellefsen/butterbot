@@ -6,11 +6,16 @@ import json
 import os
 import subprocess
 import sys
+import random
 
 # Paths
 VOSK_MODEL_PATH = os.path.join(os.path.dirname(__file__), "../text-to-speech/vosk/vosk-model-small-en-us-0.15")
 ROBERTA_MODEL_PATH = os.path.join(os.path.dirname(__file__), "../sentence-classifier/finetuned_roberta")
-READY_SOUND = os.path.join(os.path.dirname(__file__), "../butterbot_voice/what_is_my_purpose.mp3")
+VOICE_DIR = os.path.join(os.path.dirname(__file__), "../butterbot_voice")
+READY_SOUNDS = [
+    os.path.join(VOICE_DIR, "what_is_my_purpose.mp3"),
+    os.path.join(VOICE_DIR, "what_is_my_purpose_2.mp3"),
+]
 
 
 def play_sound(path):
@@ -59,7 +64,7 @@ def main():
     )
     stream.start_stream()
     print("Ready. Speak now.\n")
-    play_sound(READY_SOUND)
+    play_sound(random.choice(READY_SOUNDS))
 
     try:
         while True:
@@ -71,7 +76,7 @@ def main():
                     action = predict_action(classifier, tokenizer, text)
                     print(f'Heard:  "{text}"')
                     print(f"Action: {action}\n")
-                    play_sound(READY_SOUND)
+                    play_sound(random.choice(READY_SOUNDS))
             else:
                 partial = json.loads(recognizer.PartialResult()).get("partial", "").strip()
                 if partial:
