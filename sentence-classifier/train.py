@@ -14,7 +14,7 @@ phrases = [
     "can i have the butter", "get some butter", "i'll need the butter",
     "butter, thanks", "get the butter", "where's the butter",
     "bring the butter over", "can you grab the butter", "i could use some butter",
-    "get butter please", "we need butter", "fetch the butter for me", "butter"
+    "get butter please", "we need butter", "fetch the butter for me", "butter",
 
     # examples of "perform generic task"
     "get some ketchup", "get me some ketchup", "go drive a car", "start dancing", 
@@ -60,7 +60,7 @@ phrases = [
 ]
 
 # Labels for the actions
-labels = [0] * 21 + [1] * 45 + [2] * 40 + [4] * 21 + [3] * 3
+labels = [0] * 22 + [1] * 45 + [2] * 40 + [3] * 21 + [4] * 13
 
 # Initialize the tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')

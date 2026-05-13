@@ -2,7 +2,7 @@ from transformers import RobertaTokenizer, RobertaForSequenceClassification
 import torch
 
 # Order must match the label indices used during training
-ACTIONS = ["get butter", "perform generic task", "answer question", "existential crisis", "seeking companionship"]
+ACTIONS = ["get butter", "perform generic task", "answer question", "seeking companionship", "existential crisis"]
 MODEL_PATH = "./sentence-classifier/finetuned_roberta"
 
 def load_model_and_tokenizer(model_path):
