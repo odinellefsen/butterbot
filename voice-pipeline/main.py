@@ -9,7 +9,7 @@ import sys
 import random
 
 # Paths
-VOSK_MODEL_PATH = os.path.join(os.path.dirname(__file__), "../speech-to-text/vosk/vosk-model-small-en-us-0.15")
+VOSK_MODEL_PATH = os.path.join(os.path.dirname(__file__), "../speech-to-text/vosk/vosk-model-en-us-0.22-lgraph")
 ROBERTA_MODEL_PATH = os.path.join(os.path.dirname(__file__), "../sentence-classifier/finetuned_roberta")
 VOICE_DIR = os.path.join(os.path.dirname(__file__), "../butterbot_voice")
 READY_SOUNDS = [
