@@ -3,7 +3,7 @@ import torch
 
 # Order must match the label indices used during training
 ACTIONS = ["get butter", "perform generic task", "answer question", "seeking companionship", "existential crisis"]
-MODEL_PATH = "./sentence-classifier/finetuned_roberta"
+MODEL_PATH = "./finetuned_roberta"
 
 def load_model_and_tokenizer(model_path):
     tokenizer = RobertaTokenizer.from_pretrained(model_path)
