@@ -40,16 +40,15 @@ impl VoiceWorker {
         VoiceWorker { process, stdin }
     }
 
-    /// Tells the worker to stop feeding audio to Vosk and discard any buffered audio.
-    /// Call this before starting any audio playback to prevent the robot hearing itself.
-    pub fn pause(&mut self) {
-        let _ = writeln!(self.stdin, r#"{{"type":"pause"}}"#);
+    /// Enables audio transcription. Call when entering `Listening` state.
+    pub fn start_listening(&mut self) {
+        let _ = writeln!(self.stdin, r#"{{"type":"resume"}}"#);
     }
 
-    /// Tells the worker to resume listening. The Vosk recognizer is reset so any audio
-    /// captured during playback is discarded before utterance detection resumes.
-    pub fn resume(&mut self) {
-        let _ = writeln!(self.stdin, r#"{{"type":"resume"}}"#);
+    /// Disables audio transcription and resets the Vosk recognizer, discarding any
+    /// buffered audio. Call when leaving `Listening` state.
+    pub fn stop_listening(&mut self) {
+        let _ = writeln!(self.stdin, r#"{{"type":"pause"}}"#);
     }
 }
 

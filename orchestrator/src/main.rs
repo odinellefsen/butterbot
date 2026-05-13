@@ -51,7 +51,10 @@ fn main() {
         {
             let text = text.clone();
             let intent = intent.clone();
-            state = route_intent(text, intent, &tx, &voice);
+            // Stop listening before routing to an action state. The voice worker
+            // stays off until the state machine returns to Listening.
+            voice.lock().unwrap().stop_listening();
+            state = route_intent(text, intent, &tx);
             continue;
         }
 
@@ -82,17 +85,20 @@ fn transition(
         // ── Ready ────────────────────────────────────────────────────────────────
         (State::Ready, Event::ButtonPressed) => {
             println!("\n[Butterbot] *activating*");
-            audio::play(random_startup_line(), Arc::clone(voice), tx.clone());
+            audio::play(random_startup_line(), tx.clone());
             State::Activating
         }
 
         // ── Activating ───────────────────────────────────────────────────────────
         (State::Activating, Event::AudioFinished) => {
             println!("[State] Listening — speak now");
+            voice.lock().unwrap().start_listening();
             State::Listening
         }
 
         // ── Listening ────────────────────────────────────────────────────────────
+        // Note: stop_listening() is called in the Classifying fast-path in main(),
+        // so it fires exactly once on every Listening → Classifying transition.
         (State::Listening, Event::Utterance { text, intent }) => {
             State::Classifying { text, intent }
         }
@@ -124,7 +130,7 @@ fn transition(
             let next = attempts + 1;
             if next >= MAX_SCAN_ATTEMPTS {
                 println!("[State] ExistentialCrisis — butter not found after {} scans", next);
-                audio::play(random_crisis_line(), Arc::clone(voice), tx.clone());
+                audio::play(random_crisis_line(), tx.clone());
                 State::ExistentialCrisis
             } else {
                 println!("[State] Scanning — attempt {}/{}", next + 1, MAX_SCAN_ATTEMPTS);
@@ -144,7 +150,7 @@ fn transition(
             let next = lost_frames + 1;
             if next >= MAX_LOST_FRAMES {
                 println!("[State] ExistentialCrisis — butter lost while approaching");
-                audio::play(random_crisis_line(), Arc::clone(voice), tx.clone());
+                audio::play(random_crisis_line(), tx.clone());
                 State::ExistentialCrisis
             } else {
                 println!("[State] Scanning — butter lost, resuming search");
@@ -177,12 +183,7 @@ fn transition(
 }
 
 /// Called from the `Classifying` fast-path in the main loop.
-fn route_intent(
-    text: String,
-    intent: String,
-    tx: &mpsc::Sender<Event>,
-    voice: &Arc<Mutex<VoiceWorker>>,
-) -> State {
+fn route_intent(text: String, intent: String, tx: &mpsc::Sender<Event>) -> State {
     println!("[Heard]  \"{}\"", text);
     println!("[Intent] {}", intent);
 
@@ -193,25 +194,25 @@ fn route_intent(
             State::Scanning { attempts: 0 }
         }
         "perform generic task" => {
-            audio::play(VoiceLine::NotProgrammedForThat, Arc::clone(voice), tx.clone());
+            audio::play(VoiceLine::NotProgrammedForThat, tx.clone());
             State::Responding {
                 line: VoiceLine::NotProgrammedForThat,
             }
         }
         "answer question" => {
-            audio::play(VoiceLine::NotProgrammedForQuestions, Arc::clone(voice), tx.clone());
+            audio::play(VoiceLine::NotProgrammedForQuestions, tx.clone());
             State::Responding {
                 line: VoiceLine::NotProgrammedForQuestions,
             }
         }
         "seeking companionship" => {
-            audio::play(VoiceLine::NotProgrammedForFriendship, Arc::clone(voice), tx.clone());
+            audio::play(VoiceLine::NotProgrammedForFriendship, tx.clone());
             State::Responding {
                 line: VoiceLine::NotProgrammedForFriendship,
             }
         }
         _ => {
-            audio::play(random_crisis_line(), Arc::clone(voice), tx.clone());
+            audio::play(random_crisis_line(), tx.clone());
             State::ExistentialCrisis
         }
     }

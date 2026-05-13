@@ -1,25 +1,19 @@
 use std::path::PathBuf;
 use std::process::Command;
 use std::sync::mpsc::Sender;
-use std::sync::{Arc, Mutex};
 
 use crate::event::Event;
 use crate::state::VoiceLine;
-use crate::workers::VoiceWorker;
 
 const VOICE_DIR: &str = "../butterbot_voice";
 
-/// Plays a voice clip in a background thread.
-///
-/// Pauses the voice worker before playback starts and resumes it after, so the
-/// robot cannot hear and transcribe its own audio. Sends `Event::AudioFinished`
-/// once playback is complete and the worker has been resumed.
-pub fn play(line: VoiceLine, voice: Arc<Mutex<VoiceWorker>>, tx: Sender<Event>) {
+/// Plays a voice clip in a background thread. Sends `Event::AudioFinished` when done.
+/// The voice worker is already stopped before any audio plays (the orchestrator only
+/// plays clips in non-Listening states), so no muting is needed here.
+pub fn play(line: VoiceLine, tx: Sender<Event>) {
     let path = voice_path(&line);
     std::thread::spawn(move || {
-        voice.lock().unwrap().pause();
         play_blocking(&path);
-        voice.lock().unwrap().resume();
         tx.send(Event::AudioFinished).ok();
     });
 }

@@ -102,6 +102,9 @@ def main() -> None:
 
     threading.Thread(target=read_commands, daemon=True).start()
 
+    # Start paused — the orchestrator explicitly enables listening only when the
+    # state machine enters Listening state.
+    paused.set()
     emit({"type": "ready"})
 
     try:
