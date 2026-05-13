@@ -4,7 +4,7 @@ import torch
 from torch.nn.functional import cross_entropy
 
 # Define the actions and example phrases for each action
-actions = ["get butter", "perform generic task", "answer question", "existential crisis", "seeking companionship"]
+actions = ["get butter", "perform generic task", "answer question", "seeking companionship", "existential crisis"]
 
 phrases = [
     # examples of "get butter"
@@ -14,7 +14,7 @@ phrases = [
     "can i have the butter", "get some butter", "i'll need the butter",
     "butter, thanks", "get the butter", "where's the butter",
     "bring the butter over", "can you grab the butter", "i could use some butter",
-    "get butter please", "we need butter", "fetch the butter for me",
+    "get butter please", "we need butter", "fetch the butter for me", "butter"
 
     # examples of "perform generic task"
     "get some ketchup", "get me some ketchup", "go drive a car", "start dancing", 
@@ -54,7 +54,9 @@ phrases = [
     "sometimes I just wanna talk to someone",
 
     # examples of "existential crisis"
-    "what happens when the butter runs out", "do you like butter", "you pass butter"
+    "what happens when the butter runs out", "you pass butter", "you are a robot that passes butter", "you are a butter robot", "butter passing",
+    "you fetch butter", "you are a butter fetching robot", "you are a butter fetcher", "butter fetching",
+    "you get butter", "you are a butter getting robot", "you are a butter getter", "butter getting"
 ]
 
 # Labels for the actions
