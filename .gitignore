@@ -17,3 +17,5 @@ speech-to-text/vosk/
 *.bin
 last.pt
 *.pth
+
+*/target
