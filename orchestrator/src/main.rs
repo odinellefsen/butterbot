@@ -51,9 +51,6 @@ fn main() {
         {
             let text = text.clone();
             let intent = intent.clone();
-            // Stop listening before routing to an action state. The voice worker
-            // stays off until the state machine returns to Listening.
-            voice.lock().unwrap().stop_listening();
             state = route_intent(text, intent, &tx);
             continue;
         }
@@ -92,14 +89,13 @@ fn transition(
         // ── Activating ───────────────────────────────────────────────────────────
         (State::Activating, Event::AudioFinished) => {
             println!("[State] Listening — speak now");
-            voice.lock().unwrap().start_listening();
+            voice.lock().unwrap().start_listening();  // enter Listening: open the mic
             State::Listening
         }
 
         // ── Listening ────────────────────────────────────────────────────────────
-        // Note: stop_listening() is called in the Classifying fast-path in main(),
-        // so it fires exactly once on every Listening → Classifying transition.
         (State::Listening, Event::Utterance { text, intent }) => {
+            voice.lock().unwrap().stop_listening();   // leave Listening: close the mic
             State::Classifying { text, intent }
         }
 
