@@ -8,7 +8,7 @@ __pycache__/
 .venv/
 venv/
 env/
-text-to-speech/vosk/
+speech-to-text/vosk/
 
 
 # Model weights (too large for GitHub)
