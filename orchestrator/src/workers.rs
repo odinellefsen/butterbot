@@ -1,25 +1,31 @@
-use std::io::{BufRead, BufReader};
-use std::process::{Child, Command, Stdio};
+use std::io::{BufRead, BufReader, Write};
+use std::process::{Child, ChildStdin, Command, Stdio};
 use std::sync::mpsc::Sender;
 
 use crate::event::{Event, WorkerKind};
 use crate::state::BoundingBox;
 
-pub struct Worker {
+// ── Voice worker ─────────────────────────────────────────────────────────────
+
+pub struct VoiceWorker {
     process: Child,
+    stdin: ChildStdin,
 }
 
-impl Worker {
+impl VoiceWorker {
     /// Spawns the voice worker (Vosk + RoBERTa). Emits `WorkerReady` and `Utterance` events.
-    pub fn spawn_voice(tx: Sender<Event>) -> Self {
+    pub fn spawn(tx: Sender<Event>) -> Self {
         let mut process = Command::new("python3")
             .arg("../voice-pipeline/worker.py")
+            .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::inherit())
             .spawn()
             .expect("failed to spawn voice worker — is Python 3 available?");
 
+        let stdin = process.stdin.take().unwrap();
         let stdout = process.stdout.take().unwrap();
+
         std::thread::spawn(move || {
             let reader = BufReader::new(stdout);
             for line in reader.lines().flatten() {
@@ -31,12 +37,38 @@ impl Worker {
             eprintln!("[Voice Worker] Process exited unexpectedly");
         });
 
-        Worker { process }
+        VoiceWorker { process, stdin }
     }
 
+    /// Tells the worker to stop feeding audio to Vosk and discard any buffered audio.
+    /// Call this before starting any audio playback to prevent the robot hearing itself.
+    pub fn pause(&mut self) {
+        let _ = writeln!(self.stdin, r#"{{"type":"pause"}}"#);
+    }
+
+    /// Tells the worker to resume listening. The Vosk recognizer is reset so any audio
+    /// captured during playback is discarded before utterance detection resumes.
+    pub fn resume(&mut self) {
+        let _ = writeln!(self.stdin, r#"{{"type":"resume"}}"#);
+    }
+}
+
+impl Drop for VoiceWorker {
+    fn drop(&mut self) {
+        self.process.kill().ok();
+    }
+}
+
+// ── Vision worker ─────────────────────────────────────────────────────────────
+
+pub struct VisionWorker {
+    process: Child,
+}
+
+impl VisionWorker {
     /// Spawns the vision worker (YOLOv8 ONNX). Emits `WorkerReady`, `ButterDetected`, and
     /// `ButterLost` events. On Mac without a camera this runs as a stub.
-    pub fn spawn_vision(tx: Sender<Event>) -> Self {
+    pub fn spawn(tx: Sender<Event>) -> Self {
         let mut process = Command::new("python3")
             .arg("../butter_detection_yolov8/worker.py")
             .stdout(Stdio::piped())
@@ -45,6 +77,7 @@ impl Worker {
             .expect("failed to spawn vision worker — is Python 3 available?");
 
         let stdout = process.stdout.take().unwrap();
+
         std::thread::spawn(move || {
             let reader = BufReader::new(stdout);
             for line in reader.lines().flatten() {
@@ -56,15 +89,17 @@ impl Worker {
             eprintln!("[Vision Worker] Process exited unexpectedly");
         });
 
-        Worker { process }
+        VisionWorker { process }
     }
 }
 
-impl Drop for Worker {
+impl Drop for VisionWorker {
     fn drop(&mut self) {
         self.process.kill().ok();
     }
 }
+
+// ── Message handlers ──────────────────────────────────────────────────────────
 
 fn handle_voice_message(msg: serde_json::Value, tx: &Sender<Event>) {
     match msg["type"].as_str() {

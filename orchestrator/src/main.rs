@@ -5,10 +5,12 @@ mod workers;
 
 use std::io::{self, BufRead};
 use std::sync::mpsc;
+use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
 use event::{Event, WorkerKind};
 use state::{State, VoiceLine};
+use workers::VoiceWorker;
 
 const MAX_SCAN_ATTEMPTS: u32 = 3;
 const MAX_LOST_FRAMES: u32 = 30;
@@ -22,8 +24,8 @@ fn main() {
     println!("╚══════════════════════════════╝");
     println!("Booting — loading ML workers...\n");
 
-    let _voice_worker = workers::Worker::spawn_voice(tx.clone());
-    let _vision_worker = workers::Worker::spawn_vision(tx.clone());
+    let voice = Arc::new(Mutex::new(VoiceWorker::spawn(tx.clone())));
+    let _vision = workers::VisionWorker::spawn(tx.clone());
 
     // Simulate physical button via Enter key on stdin.
     let tx_btn = tx.clone();
@@ -40,8 +42,8 @@ fn main() {
     };
 
     loop {
-        // Classifying is a routing state — it transitions immediately without waiting for
-        // an external event. We process it inline and loop back before the next recv().
+        // Classifying is a routing state — transitions immediately without waiting for an
+        // external event. Process it inline and loop back before the next recv().
         if let State::Classifying {
             ref text,
             ref intent,
@@ -49,7 +51,7 @@ fn main() {
         {
             let text = text.clone();
             let intent = intent.clone();
-            state = route_intent(text, intent, &tx);
+            state = route_intent(text, intent, &tx, &voice);
             continue;
         }
 
@@ -58,11 +60,16 @@ fn main() {
             Err(_) => break,
         };
 
-        state = transition(state, event, &tx);
+        state = transition(state, event, &tx, &voice);
     }
 }
 
-fn transition(state: State, event: Event, tx: &mpsc::Sender<Event>) -> State {
+fn transition(
+    state: State,
+    event: Event,
+    tx: &mpsc::Sender<Event>,
+    voice: &Arc<Mutex<VoiceWorker>>,
+) -> State {
     match (state, event) {
         // ── Booting ─────────────────────────────────────────────────────────────
         (State::Booting { vision_ready, .. }, Event::WorkerReady(WorkerKind::Voice)) => {
@@ -75,7 +82,7 @@ fn transition(state: State, event: Event, tx: &mpsc::Sender<Event>) -> State {
         // ── Ready ────────────────────────────────────────────────────────────────
         (State::Ready, Event::ButtonPressed) => {
             println!("\n[Butterbot] *activating*");
-            audio::play(random_startup_line(), tx.clone());
+            audio::play(random_startup_line(), Arc::clone(voice), tx.clone());
             State::Activating
         }
 
@@ -117,7 +124,7 @@ fn transition(state: State, event: Event, tx: &mpsc::Sender<Event>) -> State {
             let next = attempts + 1;
             if next >= MAX_SCAN_ATTEMPTS {
                 println!("[State] ExistentialCrisis — butter not found after {} scans", next);
-                audio::play(random_crisis_line(), tx.clone());
+                audio::play(random_crisis_line(), Arc::clone(voice), tx.clone());
                 State::ExistentialCrisis
             } else {
                 println!("[State] Scanning — attempt {}/{}", next + 1, MAX_SCAN_ATTEMPTS);
@@ -137,7 +144,7 @@ fn transition(state: State, event: Event, tx: &mpsc::Sender<Event>) -> State {
             let next = lost_frames + 1;
             if next >= MAX_LOST_FRAMES {
                 println!("[State] ExistentialCrisis — butter lost while approaching");
-                audio::play(random_crisis_line(), tx.clone());
+                audio::play(random_crisis_line(), Arc::clone(voice), tx.clone());
                 State::ExistentialCrisis
             } else {
                 println!("[State] Scanning — butter lost, resuming search");
@@ -170,7 +177,12 @@ fn transition(state: State, event: Event, tx: &mpsc::Sender<Event>) -> State {
 }
 
 /// Called from the `Classifying` fast-path in the main loop.
-fn route_intent(text: String, intent: String, tx: &mpsc::Sender<Event>) -> State {
+fn route_intent(
+    text: String,
+    intent: String,
+    tx: &mpsc::Sender<Event>,
+    voice: &Arc<Mutex<VoiceWorker>>,
+) -> State {
     println!("[Heard]  \"{}\"", text);
     println!("[Intent] {}", intent);
 
@@ -181,26 +193,25 @@ fn route_intent(text: String, intent: String, tx: &mpsc::Sender<Event>) -> State
             State::Scanning { attempts: 0 }
         }
         "perform generic task" => {
-            audio::play(VoiceLine::NotProgrammedForThat, tx.clone());
+            audio::play(VoiceLine::NotProgrammedForThat, Arc::clone(voice), tx.clone());
             State::Responding {
                 line: VoiceLine::NotProgrammedForThat,
             }
         }
         "answer question" => {
-            audio::play(VoiceLine::NotProgrammedForQuestions, tx.clone());
+            audio::play(VoiceLine::NotProgrammedForQuestions, Arc::clone(voice), tx.clone());
             State::Responding {
                 line: VoiceLine::NotProgrammedForQuestions,
             }
         }
         "seeking companionship" => {
-            audio::play(VoiceLine::NotProgrammedForFriendship, tx.clone());
+            audio::play(VoiceLine::NotProgrammedForFriendship, Arc::clone(voice), tx.clone());
             State::Responding {
                 line: VoiceLine::NotProgrammedForFriendship,
             }
         }
         _ => {
-            // Unknown or explicit existential crisis intent.
-            audio::play(random_crisis_line(), tx.clone());
+            audio::play(random_crisis_line(), Arc::clone(voice), tx.clone());
             State::ExistentialCrisis
         }
     }
@@ -218,8 +229,6 @@ fn check_booting_complete(voice_ready: bool, vision_ready: bool) -> State {
     }
 }
 
-/// Fires a `ScanCycleComplete` event after `SCAN_CYCLE_SECS` seconds.
-/// Stale timers from previous states are harmless — the catch-all discards them.
 fn start_scan_timer(tx: mpsc::Sender<Event>) {
     std::thread::spawn(move || {
         std::thread::sleep(Duration::from_secs(SCAN_CYCLE_SECS));

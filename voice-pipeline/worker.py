@@ -13,6 +13,7 @@ Protocol (stdout, newline-delimited JSON):
 import json
 import os
 import sys
+import threading
 
 import pyaudio
 import torch
@@ -81,11 +82,33 @@ def main() -> None:
     )
     stream.start_stream()
 
+    # Pause flag — set by the orchestrator before playing audio so the robot
+    # cannot hear and transcribe its own voice clips.
+    paused = threading.Event()
+
+    def read_commands() -> None:
+        for line in sys.stdin:
+            try:
+                msg = json.loads(line.strip())
+                if msg.get("type") == "pause":
+                    paused.set()
+                    recognizer.Reset()  # discard any audio buffered during playback
+                    print("[Voice Worker] Paused", file=sys.stderr)
+                elif msg.get("type") == "resume":
+                    paused.clear()
+                    print("[Voice Worker] Resumed", file=sys.stderr)
+            except (json.JSONDecodeError, KeyError):
+                pass
+
+    threading.Thread(target=read_commands, daemon=True).start()
+
     emit({"type": "ready"})
 
     try:
         while True:
             data = stream.read(CHUNK_SIZE, exception_on_overflow=False)
+            if paused.is_set():
+                continue
             if recognizer.AcceptWaveform(data):
                 result = json.loads(recognizer.Result())
                 text = result.get("text", "").strip()
