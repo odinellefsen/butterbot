@@ -16,6 +16,13 @@ READY_SOUNDS = [
     os.path.join(VOICE_DIR, "what_is_my_purpose.mp3"),
     os.path.join(VOICE_DIR, "what_is_my_purpose_2.mp3"),
 ]
+ACTION_SOUNDS = {
+    "perform generic task":    [os.path.join(VOICE_DIR, "i_am_not_programmed_for_that.mp3")],
+    "answer question":         [os.path.join(VOICE_DIR, "i_am_not_programmed_for_questions.mp3")],
+    "seeking companionship":   [os.path.join(VOICE_DIR, "i_am_not_programmed_for_friendship.mp3")],
+    "existential crisis":      [os.path.join(VOICE_DIR, "oh_my_god.mp3"),
+                                os.path.join(VOICE_DIR, "you_are_fucking_kidding_me.mp3")],
+}
 
 
 def play_sound(path):
@@ -76,7 +83,10 @@ def main():
                     action = predict_action(classifier, tokenizer, text)
                     print(f'Heard:  "{text}"')
                     print(f"Action: {action}\n")
-                    play_sound(random.choice(READY_SOUNDS))
+                    if action == "get butter":
+                        play_sound(random.choice(READY_SOUNDS))
+                    else:
+                        play_sound(random.choice(ACTION_SOUNDS[action]))
             else:
                 partial = json.loads(recognizer.PartialResult()).get("partial", "").strip()
                 if partial:
