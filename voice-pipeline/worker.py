@@ -28,13 +28,13 @@ ROBERTA_MODEL_PATH = os.path.join(
     os.path.dirname(__file__), "../sentence-classifier/finetuned_roberta"
 )
 
-# Must match the label order used during RoBERTa fine-tuning.
+# Must match the label order used during RoBERTa fine-tuning (see sentence-classifier/train.py).
 INTENTS = [
     "get butter",
     "perform generic task",
     "answer question",
-    "existential crisis",
     "seeking companionship",
+    "existential crisis",
 ]
 
 SAMPLE_RATE = 16000
@@ -82,9 +82,10 @@ def main() -> None:
     )
     stream.start_stream()
 
-    # Pause flag — set by the orchestrator before playing audio so the robot
-    # cannot hear and transcribe its own voice clips.
+    # Flags set only by the command thread; acted on only by the audio loop thread.
+    # This keeps all recognizer access single-threaded and avoids Vosk crashes.
     paused = threading.Event()
+    needs_reset = threading.Event()
 
     def read_commands() -> None:
         for line in sys.stdin:
@@ -92,9 +93,9 @@ def main() -> None:
                 msg = json.loads(line.strip())
                 if msg.get("type") == "pause":
                     paused.set()
-                    recognizer.Reset()  # discard any audio buffered during playback
                     print("[Voice Worker] Paused", file=sys.stderr)
                 elif msg.get("type") == "resume":
+                    needs_reset.set()   # main loop will recreate recognizer safely
                     paused.clear()
                     print("[Voice Worker] Resumed", file=sys.stderr)
             except (json.JSONDecodeError, KeyError):
@@ -112,6 +113,11 @@ def main() -> None:
             data = stream.read(CHUNK_SIZE, exception_on_overflow=False)
             if paused.is_set():
                 continue
+            # Recreate the recognizer in the audio loop thread (not the command
+            # thread) so Vosk is only ever touched from one thread at a time.
+            if needs_reset.is_set():
+                recognizer = KaldiRecognizer(vosk_model, SAMPLE_RATE)
+                needs_reset.clear()
             if recognizer.AcceptWaveform(data):
                 result = json.loads(recognizer.Result())
                 text = result.get("text", "").strip()

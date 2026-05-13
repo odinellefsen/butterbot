@@ -31,8 +31,8 @@ def play_sound(path):
     else:
         subprocess.Popen(["mpg123", "-q", path])
 
-# Order must match label indices used during training
-ACTIONS = ["get butter", "perform generic task", "answer question", "existential crisis", "seeking companionship"]
+# Order must match label indices used during training (see sentence-classifier/train.py).
+ACTIONS = ["get butter", "perform generic task", "answer question", "seeking companionship", "existential crisis"]
 
 
 def load_classifier(model_path):
