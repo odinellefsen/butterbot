@@ -99,14 +99,8 @@ fn transition(
             State::Classifying { text, intent }
         }
 
-        // ── Responding ───────────────────────────────────────────────────────────
-        (State::Responding { .. }, Event::AudioFinished) => {
-            println!("[State] Ready — press Enter to activate");
-            State::Ready
-        }
-
-        // ── ExistentialCrisis ────────────────────────────────────────────────────
-        (State::ExistentialCrisis, Event::AudioFinished) => {
+        // ── Responding / ExistentialCrisis ──────────────────────────────────────
+        (State::Responding { .. } | State::ExistentialCrisis, Event::AudioFinished) => {
             println!("[State] Ready — press Enter to activate");
             State::Ready
         }
