@@ -183,29 +183,19 @@ fn route_intent(text: String, intent: String, tx: &mpsc::Sender<Event>) -> State
             start_scan_timer(tx.clone());
             State::Scanning { attempts: 0 }
         }
-        "perform generic task" => {
-            audio::play(VoiceLine::NotProgrammedForThat, tx.clone());
-            State::Responding {
-                line: VoiceLine::NotProgrammedForThat,
-            }
-        }
-        "answer question" => {
-            audio::play(VoiceLine::NotProgrammedForQuestions, tx.clone());
-            State::Responding {
-                line: VoiceLine::NotProgrammedForQuestions,
-            }
-        }
-        "seeking companionship" => {
-            audio::play(VoiceLine::NotProgrammedForFriendship, tx.clone());
-            State::Responding {
-                line: VoiceLine::NotProgrammedForFriendship,
-            }
-        }
+        "perform generic task" => respond(VoiceLine::NotProgrammedForThat, tx),
+        "answer question" => respond(VoiceLine::NotProgrammedForQuestions, tx),
+        "seeking companionship" => respond(VoiceLine::NotProgrammedForFriendship, tx),
         _ => {
             audio::play(random_crisis_line(), tx.clone());
             State::ExistentialCrisis
         }
     }
+}
+
+fn respond(line: VoiceLine, tx: &mpsc::Sender<Event>) -> State {
+    audio::play(line.clone(), tx.clone());
+    State::Responding { line }
 }
 
 fn check_booting_complete(voice_ready: bool, vision_ready: bool) -> State {
