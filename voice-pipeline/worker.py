@@ -52,13 +52,14 @@ def load_classifier(model_path: str):
 
 
 def classify(model, tokenizer, text: str) -> str:
-    inputs = tokenizer(
-        text, return_tensors="pt", padding=True, truncation=True, max_length=512
-    )
-    input_ids = inputs["input_ids"].to(model.device)
-    attention_mask = inputs["attention_mask"].to(model.device)
+    inputs = {
+        k: v.to(model.device)
+        for k, v in tokenizer(
+            text, return_tensors="pt", padding=True, truncation=True, max_length=512
+        ).items()
+    }
     with torch.no_grad():
-        logits = model(input_ids, attention_mask=attention_mask).logits
+        logits = model(**inputs).logits
     return INTENTS[logits.argmax(-1).item()]
 
 
